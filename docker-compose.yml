@@ -1,0 +1,70 @@
+# docker-compose.yml — local OpenMRS for offline test execution.
+#
+# Starts MySQL 5.7 + OpenMRS Reference Application. First boot takes
+# ~3-5 minutes while OpenMRS runs DB migrations. Subsequent boots are fast.
+#
+# Usage:
+#   npm run start:openmrs   # boots both containers, waits until ready
+#   npm run stop:openmrs    # tears them down (preserves the data volume)
+#   npm run logs:openmrs    # follow OpenMRS logs
+#   npm run reset:openmrs   # DESTROYS the data volume and starts fresh
+
+services:
+  mysql:
+    # MySQL 5.7 is what OpenMRS Reference Application 2.10 was tested against.
+    # On Apple Silicon (ARM64) we run it via linux/amd64 emulation since
+    # mysql:5.7 has no native ARM64 manifest.
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: openmrs-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: openmrs
+      MYSQL_USER: openmrs
+      MYSQL_PASSWORD: openmrs
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_allowed_packet=32M
+    volumes:
+      - openmrs-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uopenmrs", "-popenmrs"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    ports:
+      # Expose MySQL so the DB layer in this framework can talk to it directly.
+      - "3306:3306"
+
+  openmrs:
+    image: openmrs/openmrs-reference-application-distro:2.10.0
+    # OpenMRS has both ARM64 and AMD64 manifests — no platform pin needed,
+      # but pinning matches the MySQL service for consistency.
+    platform: linux/amd64
+    container_name: openmrs-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # NOTE: env var names match what startup.sh reads (DB_DATABASE, not DB_NAME).
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: openmrs
+      DB_USERNAME: openmrs
+      DB_PASSWORD: openmrs
+      DB_CREATE_TABLES: "true"
+      DB_AUTO_UPDATE: "true"
+      MODULE_WEB_ADMIN: "true"
+      DEBUG: "false"
+    ports:
+      # 8080 is already taken on most dev machines, so we map to 8088.
+      # Override with OPENMRS_PORT=8080 in your shell if 8088 conflicts too.
+      - "${OPENMRS_PORT:-8088}:8080"
+
+volumes:
+  openmrs-mysql-data:
+    name: openmrs-mysql-data

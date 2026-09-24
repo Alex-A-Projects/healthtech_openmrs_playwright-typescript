@@ -1,0 +1,30 @@
+{
+  "name": "openmrs-playwright-typescript",
+  "version": "1.0.0",
+  "description": "Playwright + TypeScript automation test suite for OpenMRS O2 (UI + REST API + MySQL DB)",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test tests/ui",
+    "test:api": "playwright test tests/api",
+    "test:db": "playwright test tests/db",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:list": "playwright test --list",
+    "codegen": "playwright codegen https://o2.openmrs.org/openmrs/login.htm",
+    "lint": "tsc --noEmit",
+    "start:openmrs": "docker compose up -d && ./scripts/wait-for-openmrs.sh",
+    "stop:openmrs": "docker compose down",
+    "logs:openmrs": "docker compose logs -f openmrs",
+    "reset:openmrs": "docker compose down -v && npm run start:openmrs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^20.11.0",
+    "@types/mysql": "^2.15.21",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.0",
+    "typescript": "^5.4.0"
+  }
+}

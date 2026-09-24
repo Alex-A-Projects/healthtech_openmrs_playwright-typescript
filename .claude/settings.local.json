@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk 'NR>=5 && NR<=9' /Users/alex/QA/Automation/healthtech_openmrs_playwright-typescript/src/types/db.types.ts)",
+      "Bash(chmod +x /Users/alex/QA/Automation/healthtech_openmrs_playwright-typescript/scripts/wait-for-openmrs.sh)",
+      "Bash(docker --version)",
+      "Bash(docker compose *)",
+      "Bash(docker pull *)",
+      "Bash(curl -s -L -b /tmp/openmrs-cookies.txt http://localhost:8088/openmrs/app/legacyui/home.page)",
+      "Bash(curl -s -L -b /tmp/openmrs-cookies.txt http://localhost:8088/openmrs/app/home.page)",
+      "Bash(curl -s -b /tmp/openmrs-cookies.txt http://localhost:8088/openmrs/coreapps/systemadmin/systemadmin.page)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/active-visits.spec.ts tests/ui/configure-metadata.spec.ts tests/ui/system-administration.spec.ts tests/ui/appointment-scheduling.spec.ts --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/appointment-scheduling.spec.ts --reporter=line)",
+      "Bash(curl -s -L -c /tmp/setup-cookies.txt http://localhost:8088/openmrs/initialsetup -o /tmp/setup-page.html)",
+      "Bash(chmod +x scripts/wait-for-openmrs.sh)",
+      "Bash(./scripts/wait-for-openmrs.sh)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 10 https://o2.openmrs.org/openmrs/login.htm)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/api/session-api.spec.ts -g \"GET /session returns the authenticated user\" --workers=1 --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/home-dashboard.spec.ts -g \"the home page loads\" --workers=1 --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/home-dashboard.spec.ts -g \"Find Patient Record app tile\" --workers=1 --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/home-dashboard.spec.ts --workers=1 --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/ --workers=1 --reporter=line)",
+      "Bash(SKIP_GLOBAL_SETUP=true npx playwright test tests/ui/configure-metadata.spec.ts -g \"Configure Metadata page shows its heading\" --workers=1 --reporter=line)",
+      "Bash(curl -s \"https://registry.hub.docker.com/v2/repositories/openmrs/openmrs-reference-application-distro/tags/\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:8088/openmrs/login.htm)",
+      "Bash(curl -s -L -o /dev/null -w \"Final HTTP %{http_code}\\\\nFinal URL: %{url_effective}\\\\n\" http://localhost:8088/openmrs/login.htm)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" -L http://localhost:8088/openmrs/login.htm)"
+    ]
+  }
+}
