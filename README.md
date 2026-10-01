@@ -42,6 +42,17 @@ The POMs detect this with `isBrokenPage()` and call `testInfo.skip()` — tests 
 **Currently against local Docker:** ~50 pass, ~165 skip, 0 fail.  
 **Against the public O2 demo:** all tests pass.
 
+## Stack
+
+- TypeScript 5.9 (strict) — test code + source
+- Playwright 1.63 — UI runner + built-in `request` for the REST layer (no separate HTTP client)
+- `mysql2` 3.24 — direct MySQL queries for the DB layer (no ORM)
+- Chromium (Desktop Chrome) — single browser project
+- Docker Compose — local OpenMRS 2.10.0 + MySQL 5.7 stack
+- `dotenv` — `.env` loading
+
+No external assertion libraries — Playwright's `expect` is used everywhere.
+
 ## Project layout
 
 ```
